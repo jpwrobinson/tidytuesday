@@ -16,11 +16,12 @@ obs<-eruptions %>% filter(evidence_method_dating == 'Historical Observations' & 
 
 obs<-left_join(obs, volcano)
 
+obs$volcano_name<-order(obs$volcano_name, obs$region)
 
 ggplot(obs %>% filter(vei>3 & freq>10), aes(volcano_name, start_year, size=vei, fill=population_within_10_km)) + 
-  geom_point(alpha=0.5, shape=21,colour='black') + 
+  geom_point(alpha=0.5, shape=21,colour='black',stroke=1.2) + 
   coord_flip() +
-  labs(x='', y='', title='Volcano Explosivity Index in the 100 most active volcanoes') +
+  labs(x='', y='', title='Volcano Explosivity Index of the 100 most active volcanoes') +
   scale_size_area(breaks=c(4,5,6), trans='exp', max_size=40) +
   scale_fill_gradient(na.value='white', low='#ffffcc', high='#800026') +
   scale_y_continuous(breaks=seq(1800, 2020, 20)) +
