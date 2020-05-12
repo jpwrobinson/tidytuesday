@@ -10,13 +10,21 @@ head(eruptions) %>% data.frame()
 head(events) %>% data.frame()
 
 
-obs<-eruptions %>% filter(evidence_method_dating == 'Historical Observations' & start_year > 0) %>%
+obs<-eruptions %>% filter(evidence_method_dating == 'Historical Observations' & start_year > 1800) %>%
           select(volcano_name, volcano_number, vei, start_year, end_year, latitude, longitude) %>%
           group_by(volcano_name) %>% mutate(freq = length(volcano_name), max.vei = max(vei, na.rm=TRUE))
 
 obs<-left_join(obs, volcano)
 
 
+ggplot(obs %>% filter(vei>3 & freq>10), aes(volcano_name, start_year, size=vei, fill=population_within_10_km)) + 
+  geom_point(alpha=0.5, shape=21,colour='black') + 
+  coord_flip() +
+  labs(x='', y='', title='Volcano Explosivity Index in the 100 most active volcanoes') +
+  scale_size_area(breaks=c(4,5,6), trans='exp', max_size=40) +
+  scale_fill_gradient(na.value='white', low='#ffffcc', high='#800026') +
+  scale_y_continuous(breaks=seq(1800, 2020, 20)) +
+  theme_classic() 
 
 ggplot(obs %>% filter(start_year > 1882 & !is.na(vei)), aes(country, start_year, fill=vei)) + 
           geom_tile() + 
@@ -36,7 +44,8 @@ ggplot(obs %>% filter(start_year > 1882 & !is.na(vei)), aes(longitude, latitude,
 
 ggplot(obs, aes(longitude, latitude, col=freq, size=max.vei)) + 
   geom_point(alpha=0.2) + 
-  theme_bw()
+  theme_bw()+
+  scale_colour_gradient(high='red', low='white')
 
 
 
