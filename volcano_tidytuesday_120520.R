@@ -53,7 +53,7 @@ right<-ggplot(plotter2) +
   geom_bar(aes(volcano_name, freq, fill=region), stat='identity') +
   geom_text(aes(x=volcano_name, y=freq, label = region, col=region), size=2,hjust = -0.1) +
   coord_flip() + 
-  labs(y = 'Number of eruptions since 1800', x = '', title='', subtitle='Number of eruptions, ordered from north - south') +
+  labs(y = 'Number of eruptions since 1800', x = '', title='', subtitle='Number of eruptions, north -> south') +
   theme_classic() + 
   theme(
     axis.text.y = element_text(size=9, colour='white', hjust=0.5),
