@@ -1,13 +1,14 @@
 # Get the Data
 setwd('tidytuesday')
 # vb <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-19/vb_matches.csv', guess_max = 76000)
-library(ggtext)
+
 library(countrycode)
 library(tidyverse)
 library(cowplot)
 library(ggflags)
+library(ggthemes)
 
-theme_set(theme_classic())
+theme_set(theme_solarized())
 head(vb)
 vb2<-vb %>% filter(circuit == 'FIVB') %>%
         mutate(age_win = (w_p1_age + w_p2_age)/2,
@@ -39,8 +40,7 @@ top<-ggplot(vb_avg) +
   labs(x = '', y = 'age, yrs', subtitle='Winners are older (but getting younger)') +
   scale_x_continuous(breaks=seq(2000, 2020,3)) +
   theme( 
-        plot.margin=margin(0.1, 0.1, -1, 0.1, 'cm'),
-        text = element_text(family = "Andale Mono"))
+        plot.margin=margin(0.1, 0.1, -1, 0.1, 'cm'))
 
 mid<-ggplot(vb_avg) + 
   geom_point(aes(year, hgt_win),col='#1b9e77') +
@@ -48,9 +48,10 @@ mid<-ggplot(vb_avg) +
   geom_point(aes(year, hgt_lose), col='#d95f02') +
   geom_line(aes(year, hgt_lose), col='#d95f02') +
   labs(x = '', y = 'height, cm', subtitle='Winners are taller (and growing)',
-    caption = '@jamespwr\n#tidytuesday: Beach volleyball') +
+    caption = '@jamespwr\n #tidytuesday, 19th May 2020') +
   scale_x_continuous(breaks=seq(2000, 2020,3)) +
-  theme(plot.margin=margin(-1, 0.1, 0, 0.1, 'cm'))
+  theme(plot.margin=margin(-1, 0.1, 0, 0.1, 'cm'),
+    plot.caption = element_text(color='#1b9e77'))
 
 
 vb_nation$code<-tolower(countrycode(vb_nation$country_win, origin = 'country.name', destination = 'iso2c'))
